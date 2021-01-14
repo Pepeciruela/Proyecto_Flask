@@ -39,10 +39,12 @@ def consulta(query, params =()):
 @app.route('/')
 def index():
     
-    operaciones = consulta("SELECT ")
+    #Seleccionamos los datos a extraer de la función consulta
+    operaciones = consulta("SELECT date, time, from_currency, form_quantity, to_currency, to_quantity, id FROM criptomonedas;")
     
-    return render_template ("index.html")
+    return render_template ("index.html", title = "Movimientos de compra y venta de Criptomonedas")
 
+"""
 @app.route("/purchase", methods=["GET", "POST"])
 def compra_venta():
     if request.method == "POST":
@@ -52,4 +54,5 @@ def compra_venta():
 
 @app.route("/status")
 def estado_inversion():
-    return "estado de las inversiones"
+    return "estado de las inversiones
+    """

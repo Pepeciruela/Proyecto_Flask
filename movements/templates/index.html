@@ -1,11 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1> HELLO WORLD </h1>
-</body>
-</html>
+{% block title %} Compra y venta de Criptomonedas {% endblock %}
+
+{% block content %}
+    <div class="title grid">
+        <h1 class="title_text">Movimientos de compra y venta</h1>
+    </div>
+    {% if datos|length > 0 %}
+        <table>
+            <tr>
+                <th class="fecha">Fecha</th>
+                <th class="concepto">Concepto</th>
+                <th class="importe">Importe/Guita</th>
+                <th class="acciones" colspan="2">Acciones</th>
+            </tr>
+        {% for registro in datos %}
+            <tr>
+                <td>{{ registro['fecha'] }}</td>
+                <td>{{ registro['concepto'] }}</td>
+                <td class="importe">{{ registro['cantidad'] }}€</td>
+                <td><a href="/modifica/{{ registro['id'] }}"><i class="fa fa-pencil"></i></a></td>
+                <td><a href="/borra/{{ registro['id']}}"><i class="fa fa-times"></i></a></td>
+            </tr>
+        {% endfor %}
+            <tr>
+                <td class="total" colspan="3">Total: {{total}}€</td>
+            </tr>
+        </table>
+    {% else %}
+        <p>No hay movimientos. crea el tuyo</p>
+        
+    {% endif %}
+    {% endblock %}
