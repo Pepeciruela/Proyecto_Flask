@@ -6,7 +6,7 @@ DB_FILE = app.config["DB_FILE"]
 
 @app.route('/')
 def index():
-    return "Inicio"
+    return render_template ("index.html")
 
 @app.route("/purchase")
 def compra_venta():
