@@ -10,7 +10,7 @@ def consulta(query, params =()):
     conn = sqlite3.connect(DB_FILE)
     #CREAR EL CURSOS
     c = conn.cursor() 
-    #INSERTAR LOS DATOS ESTABLECIDOS EN EL DATA BASE
+    #EJECUTAR LOS DATOS ESTABLECIDOS EN EL DATA BASE
     c.execute(query, params)
     #SALVAR LOS CAMBIOS
     conn.commit()
@@ -49,7 +49,7 @@ def compra_venta():
     
     """validacion = validacionMovimientos()"""
     
-    if request.method == "POST": #Si envio información sin ser visible para el usuario
+    """if request.method == "POST": #Si envio información sin ser visible para el usuario
         if validacion.validate(): #Validamos los parámetros que se le van a pasar
             consulta ("INSERT INTO movimientos(date, time, from_currency, form_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);",(
                 validacion.date.data,
@@ -61,13 +61,13 @@ def compra_venta():
             ))
             return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
         else:
-            return render_template ("compra_criptos.html", validacion = validacion) #Sino vuelve a la página de creación de altas
+            return render_template ("compra_criptos.html", validacion = validacion) #Sino vuelve a la página de creación de altas"""
         
-    return render_template ("compra_criptos.html", validacion = validacion) #Sino es un POST se sale y vuelve a la pagina de creación de altas
+    return render_template ("compra_criptos.html") #Sino es un POST se sale y vuelve a la pagina de creación de altas
         
         
 
-@app.route("/status")
+"""@app.route("/status")
 def estado_inversion():
     return "estado de las inversiones
     """
