@@ -40,17 +40,32 @@ def consulta(query, params =()):
 def index():
     
     #Seleccionamos los datos a extraer de la función consulta
-    operaciones = consulta("SELECT date, time, from_currency, form_quantity, to_currency, to_quantity, id FROM criptomonedas;")
+    operaciones = consulta("SELECT date, time, from_currency, form_quantity, to_currency, to_quantity, id FROM criptomonedas;") #De la función consulta, llamamos a los parámteros que precisamos
     
-    return render_template ("index.html", title = "Movimientos de compra y venta de Criptomonedas")
+    return render_template ("index.html", datos = operaciones, title = "Movimientos de compra y venta de Criptomonedas") #Devolver en pantalla la información solicitada
 
-"""
 @app.route("/purchase", methods=["GET", "POST"])
 def compra_venta():
-    if request.method == "POST":
-        request.form[]
+    
+    """validacion = validacionMovimientos()"""
+    
+    if request.method == "POST": #Si envio información sin ser visible para el usuario
+        if validacion.validate(): #Validamos los parámetros que se le van a pasar
+            consulta ("INSERT INTO movimientos(date, time, from_currency, form_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);",(
+                validacion.date.data,
+                validacion.time.data,
+                validacion.from_currency.data,
+                validacion.form_quality.data,
+                validacion.to_currency.data,
+                validacion.to_quantity.data,
+            ))
+            return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+        else:
+            return render_template ("compra_criptos.html", validacion = validacion) #Sino vuelve a la página de creación de altas
         
-        return redirect(url_for("index"))
+    return render_template ("compra_criptos.html", validacion = validacion) #Sino es un POST se sale y vuelve a la pagina de creación de altas
+        
+        
 
 @app.route("/status")
 def estado_inversion():

@@ -7,10 +7,12 @@
     {% if datos|length > 0 %}
         <table>
             <tr>
-                <th class="fecha">Fecha</th>
-                <th class="concepto">Concepto</th>
-                <th class="importe">Importe/Guita</th>
-                <th class="acciones" colspan="2">Acciones</th>
+                <th class="Fecha">Fecha</th>
+                <th class="Hora">Hora</th>
+                <th class="Moneda_from">Moneda_from</th>
+                <th class="Cantidad_from">Cantidad_from</th>
+                <th class="Moneda_to">Moneda_to</th>
+                <th class="Cantidad_to">Cantidad_to<th>
             </tr>
         {% for registro in datos %}
             <tr>
@@ -26,7 +28,7 @@
             </tr>
         </table>
     {% else %}
-        <p>No hay movimientos. crea el tuyo</p>
+        <p>SIN MOVIMIENTOS</p>
         
     {% endif %}
     {% endblock %}
