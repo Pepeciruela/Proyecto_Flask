@@ -2,15 +2,17 @@ from flask_wtf import FlaskForm
 from wtforms import IntegerField, DateField, StringField, FloatField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length
 from datetime import date
+from datetime import datetime
 
-"""Validar fecha con el sistema """
+def today(form, field):
+    today = date.today()
+    
 
 class Validacion(FlaskForm):
-    date = DateField ("Fecha", validators = [DataRequired]) 
-    """time
+    date = DateField ("Fecha", validators = [DataRequired(), today])
+    """time =
     from_currency
-    form_quantity
-    to_currency
-    to_quantity"""
-    
+    from_quantity
+    to_currency"""
+    from_quantity = FloatField('Cantidad', validators=[DataRequired()])
     submit = SubmitField("Aceptar")

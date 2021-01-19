@@ -1,32 +1,31 @@
+{% extends 'base.html' %}
+
 {% block title %} Compra y venta de Criptomonedas {% endblock %}
 
 {% block content %}
     <div class="title grid">
-        <h1 class="title_text">Movimientos de compra y venta <a href = "compra_venta"> Compra </a></h1>
+        <h1 class="title_text">Movimientos de compra y venta <a href = "/purchase"> Compra </a></h1>
     </div>
     {% if datos|length > 0 %}
         <table>
             <tr>
-                <th class="Fecha">Fecha</th>
-                <th class="Hora">Hora</th>
-                <th class="Moneda_from">Moneda_from</th>
-                <th class="Cantidad_from">Cantidad_from</th>
-                <th class="Moneda_to">Moneda_to</th>
-                <th class="Cantidad_to">Cantidad_to<th>
+                <th class="date">Fecha</th>
+                <th class="time">Hora</th>
+                <th class="from_currency">Moneda_from</th>
+                <th class="from_quantity">Cantidad_from</th>
+                <th class="to_currency">Moneda_to</th>
+                <th class="to_quantity">Cantidad_to<th>
             </tr>
-        {% for registro in datos %}
+        {% for dato in datos %}
             <tr>
-                <td>{{ registro['fecha'] }}</td>
-                <td>{{ registro['concepto'] }}</td>
-                <td class="importe">{{ registro['cantidad'] }}€</td>
-                <td><a href="/modifica/{{ registro['id'] }}"><i class="fa fa-pencil"></i></a></td>
-                <td><a href="/borra/{{ registro['id']}}"><i class="fa fa-times"></i></a></td>
+                <td>{{ datos.0 }}</td>
+                <td>{{ datos.1 }}</td>
+                <td>{{ datos.2 }} </td>
+                <td>{{ datos.3 }} </td>
+                <td>{{ datos.4 }} </td>
+                <td>{{ datos.5 }} </td>
             </tr>
         {% endfor %}
-            <tr>
-                <td class="total" colspan="3">Total: {{total}}€</td>
-            </tr>
-        </table>
     {% else %}
         <p>SIN MOVIMIENTOS</p>
         
