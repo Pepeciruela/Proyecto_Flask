@@ -9,10 +9,11 @@ def today(form, field):
     
 
 class Validacion(FlaskForm):
-    date = DateField ("Fecha", validators = [DataRequired(), today])
-    """time =
-    from_currency
-    from_quantity
-    to_currency"""
-    from_quantity = FloatField('Cantidad', validators=[DataRequired()])
+    date = StringField ("Fecha", validators = [DataRequired()])
+    time = StringField ("Hora", validators = [DataRequired()])
+    from_currency = StringField ("from_currency", validators = [DataRequired()])
+    from_quantity = StringField('from_quantity', validators=[DataRequired()])
+    to_currency = StringField ("to_currency", validators = [DataRequired()])
+    to_quantity = StringField("to_quantity", validators=[DataRequired()])
     submit = SubmitField("Aceptar")
+   

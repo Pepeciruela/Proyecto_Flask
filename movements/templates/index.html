@@ -19,12 +19,12 @@
             </tr>
         {% for dato in datos %}
             <tr>
-                <td>{{ datos.0 }}</td>
-                <td>{{ datos.1 }}</td>
-                <td>{{ datos.2 }} </td>
-                <td>{{ datos.3 }} </td>
-                <td>{{ datos.4 }} </td>
-                <td>{{ datos.5 }} </td>
+                <td>{{ dato['date'] }}</td>
+                <td>{{ dato['time'] }}</td>
+                <td>{{ dato['from_currency'] }} </td>
+                <td>{{ dato['from_quantity'] }} </td>
+                <td>{{ dato['to_currency'] }} </td>
+                <td>{{ dato['to_quantity'] }} </td>
             </tr>
         {% endfor %}
     {% else %}
