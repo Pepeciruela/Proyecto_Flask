@@ -52,8 +52,8 @@ def compra_venta():
     if request.method == "POST": #Si envio información sin ser visible para el usuario
         if validacion.validate:
             consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
-                    (validacion.date.data, 
-                    validacion.time.data, 
+                    (validacion.date, 
+                    validacion.time, 
                     validacion.from_currency.data, 
                     validacion.from_quantity.data,
                     validacion.to_currency.data, 
