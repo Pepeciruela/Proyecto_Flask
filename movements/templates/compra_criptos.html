@@ -7,13 +7,40 @@
 <div class="card card-body">
     <form action = "{{url_for('compra_venta')}}" method="POST">
         <div class="field">
-            {{ validacion.from_currency.label }}
-            {{ validacion.from_currency(type="text", class="error-data" if validacion.from_currency.errors else "") }}
-            {% for error in validacion.from_currency.errors %}
-                <p class="err-msg">
-                    {{ error }}
-                </p>
-            {% endfor %}
+            <p>From:</p>
+            <select name = from_currency>
+                <option value = "EUR"> EUR </option>
+                <option value = "BTC"> BTC </option>
+                <option value = "ETH"> ETH </option>
+                <option value = "XRP"> XRP </option>
+                <option value = "LTC"> LTC </option>
+                <option value = "BCH"> BCH </option>
+                <option value = "BNB"> BNB </option>
+                <option value = "USTD"> USTD </option>
+                <option value = "EOS"> EOS </option>
+                <option value = "BSV"> BSV </option>
+                <option value = "XLM"> XLM </option>
+                <option value = "ADA"> ADA </option>
+                <option value = "TRX"> TRX </option>
+            </select>
+        </div>
+        <div class="field">
+            <p>To:</p>
+            <select name = to_currency>
+                <option value = "EUR"> EUR </option>
+                <option value = "BTC"> BTC </option>
+                <option value = "ETH"> ETH </option>
+                <option value = "XRP"> XRP </option>
+                <option value = "LTC"> LTC </option>
+                <option value = "BCH"> BCH </option>
+                <option value = "BNB"> BNB </option>
+                <option value = "USTD"> USTD </option>
+                <option value = "EOS"> EOS </option>
+                <option value = "BSV"> BSV </option>
+                <option value = "XLM"> XLM </option>
+                <option value = "ADA"> ADA </option>
+                <option value = "TRX"> TRX </option>
+            </select>
         </div>
         <div class="field">
             {{ validacion.from_quantity.label }}
@@ -25,14 +52,8 @@
             {% endfor %}
         </div>
         <div class="field">
-            {{ validacion.to_currency.label }}
-            {{ validacion.to_currency(type="text", class="error-data" if validacion.to_currency.errors else "") }}
-            {% for error in validacion.to_currency.errors %}
-                <p class="err-msg">
-                    {{ error }}
-                </p>
-            {% endfor %}
-        </div>
+            {{ validacion.calculadora }}
+        </div> 
         <div class="field">
             {{ validacion.to_quantity.label }}
             {{ validacion.to_quantity(type="text", class="error-data" if validacion.to_quantity.errors else "") }}

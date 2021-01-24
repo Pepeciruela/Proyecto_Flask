@@ -49,7 +49,7 @@ def compra_venta():
     
     validacion = Validacion()
     
-    if request.method == "POST": #Si envio información sin ser visible para el usuario
+    if request.method == "POST":
         if validacion.validate:
             consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
                     (validacion.date, 
@@ -71,3 +71,5 @@ def compra_venta():
 def estado_inversion():
     return "estado de las inversiones
     """
+    
+    
