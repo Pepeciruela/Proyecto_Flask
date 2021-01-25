@@ -3,8 +3,11 @@ from movements import app
 from movements.validacion import Validacion
 import sqlite3
 from datetime import date
+from requests import Request, Session
+import json
 
 DB_FILE = app.config["DB_FILE"]
+API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
 
 def consulta(query, params=()):
     #CONECTAMOS CON LA BASE DE DATOS
@@ -46,30 +49,69 @@ def index():
 
 @app.route("/purchase", methods=["GET", "POST"])
 def compra_venta():
-    
-    validacion = Validacion()
-    
-    if request.method == "POST":
-        if validacion.validate:
-            consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
-                    (validacion.date, 
-                    validacion.time, 
-                    validacion.from_currency.data, 
-                    validacion.from_quantity.data,
-                    validacion.to_currency.data, 
-                    validacion.to_quantity.data
-                    ))
-            return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
-        else:
-            return render_template ("compra_criptos.html", validacion = validacion) #Sino vuelve a la página de creación de altas
-            
-    return render_template ("compra_criptos.html", validacion = validacion) #Sino es un POST se sale y vuelve a la pagina de creación de altas"""
+    if request.method == 'GET':
+        criptomonedas = ('EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX')
+        monedas = consulta("SELECT DISTINCT to_currency FROM criptomonedas;")
+        print (monedas[0])
+        """lista_monedas = []
+        for moneda in range(len(monedas)):
+            for i in moneda:
+                if i not in criptomonedas:
+                    print (i, "no está dentro de criptomonedas")
+                else:
+                    lista_monedas.append(i)
+        print (lista_monedas)"""
             
         
-
-"""@app.route("/status")
-def estado_inversion():
-    return "estado de las inversiones
-    """
+        validacion = Validacion()
+        validacion.to_currency.choices = monedas
+        
+        
+        return render_template('compra_criptos.html', validacion = validacion)
+        
+        
+        
+    """if request.method == "POST":
+        validacion = Validacion()
+        
+        validacion.from_currency.choices = [request.validacion.get('from_currency')]
+        validacion.to_currency.choices = [request.validacion.get('to_currency')]
+        #monedero --> hacer una funcion para calcular las moneadas disponibes con un select
+        
+        if request.validacion.get('submit') == 'Aceptar' and validacion.validate():
+            try:
+                consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
+                        (request.validacion.get('date'), 
+                        request.validacion.get('time'), 
+                        request.validacion.get('from_currency'), 
+                        request.validacion.get('from_quantity'),
+                        request.validacion.get('to_currency'), 
+                        request.validacion.get('to_quantity')
+                        ))
+                return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+            except:
+                return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+        else:
+            
+            amount = request.validacion.get('from_quantity')
+            symbol = request.validacion.get('from_currency')  
+            convert = request.validacion.get('to_currency')
+            API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
+            
+            
+            try:
+                url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
+                respuesta = requests.get(url)
+                if respuesta.status_code == 200:
+                    datos = respuesta.json()
+                else: 
+                    print ('Error', respuesta.status)
+                    
+                to_quantity = datos['data']['quote'][convert]['price']
+                precio_unidad = float(amount)/to_quantity
+                
+                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, precio_unidad = precio_unidad) #Sino es un POST se sale y vuelve a la pagina de creación de altas
+            except:
+                return render_template ('compra_criptos.html', validacion=validacion)"""
     
     

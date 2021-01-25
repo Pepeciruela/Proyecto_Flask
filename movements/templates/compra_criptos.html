@@ -8,24 +8,7 @@
     <form action = "{{url_for('compra_venta')}}" method="POST">
         {{validacion.hidden_tag()}}
         
-        <div class="field">
-            <p>
-                {{validacion.from_currency.label}}
-                {{validacion.from_currency(class="error-data" if validacion.from_currency.errors else "")}}
-                {% for error in validacion.from_currency.errors %}
-                <p class="err-msg">
-                    {{ error }}
-                </p>
-            {% endfor %}
-
-        <div class="field">
-            {{ validacion.from_quantity.label }}
-            {{validacion.from_quantity (class="error-data" if validacion.from_quantity.errors else "")}}
-            {% for error in validacion.from_quantity.errors %}
-                <p class="err-msg">
-                    {{ error }}
-                </p>
-            {% endfor %}
+        
 
             <div class="field">
                 {{ validacion.to_currency.label }}
@@ -36,15 +19,8 @@
                     </p>
                 {% endfor %}
         </div>
-        <div class="field">
-            Calculadora
-        </div>
 
-        <div class="field">
-            {{validacion.submit.label}}
-            {{validacion.submit}}
-        </div>
-
+        
         </form>
     </div>
     
