@@ -43,7 +43,7 @@ def consulta(query, params=()):
 @app.route('/')
 def index():
     
-    operaciones = consulta("SELECT date, time, from_currency, from_quantity, to_currency, to_quantity, id FROM criptomonedas;") #De la función consulta, llamamos a los parámteros que precisamos
+    operaciones = consulta("SELECT date, time, from_currency, from_quantity, to_currency, to_quantity, p_u, id FROM criptomonedas;") #De la función consulta, llamamos a los parámteros que precisamos
     
     return render_template ("index.html", datos = operaciones, title = "Movimientos de compra y venta de Criptomonedas") #Devolver en pantalla la información solicitada
 
@@ -68,21 +68,21 @@ def compra_venta():
         
     else: # Si el metodo es POST
         validacion = Validacion()
-        if validacion.validate():
-            consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
-                    (validacion.date, 
-                    validacion.time, 
-                    request.form.get("from_currency"), 
-                    request.form.get("from_quantity"),
-                    request.form.get("to_currency"), 
-                    request.form.get("to_quantity"),
-                    ))
-            return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+        if request.form.get("submit") == "Aceptar" and validacion.validate():
+            try:
+                consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity, p_u) VALUES(?, ?, ?, ?, ?, ?, ?);", 
+                        (validacion.date, 
+                        validacion.time, 
+                        request.form.get("from_currency"), 
+                        request.form.get("from_quantity"),
+                        request.form.get("to_currency"), 
+                        request.form.get("to_quantity"),
+                        request.form.get("p_u"),
+                        ))
+                return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+            except:
+                return render_template ('compra_criptos.html', validacion=validacion)       
         else:
-            return render_template ('compra_criptos.html', validacion=validacion)
-        
-            """return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio"""
-        """else:
             
             amount = request.form.get('from_quantity')
             symbol = request.form.get('from_currency')  
@@ -97,10 +97,10 @@ def compra_venta():
                     print ('Error', respuesta.status)
                     
                 to_quantity = datos['data']['quote'][convert]['price']
-                precio_unidad = float(amount)/to_quantity
+                p_u = float(amount)/to_quantity
                 
-                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, precio_unidad = precio_unidad) #Sino es un POST se sale y vuelve a la pagina de creación de altas
+                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) #Sino es un POST se sale y vuelve a la pagina de creación de altas
             except:
-                return render_template ('compra_criptos.html', validacion=validacion)"""
+                return render_template ('compra_criptos.html', validacion=validacion)
     
     

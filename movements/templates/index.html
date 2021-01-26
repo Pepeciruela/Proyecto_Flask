@@ -16,6 +16,8 @@
                 <th class="from_quantity">Cantidad_from</th>
                 <th class="to_currency">Moneda_to</th>
                 <th class="to_quantity">Cantidad_to<th>
+                <th class="p_u">P_U<th>
+
             </tr>
         {% for dato in datos %}
             <tr>
@@ -25,6 +27,7 @@
                 <td>{{ dato['from_quantity'] }} </td>
                 <td>{{ dato['to_currency'] }} </td>
                 <td>{{ dato['to_quantity'] }} </td>
+                <td>{{ dato['p_u'] }} </td>
             </tr>
         {% endfor %}
     {% else %}
