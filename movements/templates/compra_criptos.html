@@ -20,15 +20,15 @@
                 {% endfor %}
             </div>
 
-        <div class="field">
-            {{ validacion.to_currency.label }}
-            {{validacion.to_currency(class="error-data" if validacion.to_currency.errors else "")}}
-            {% for error in validacion.to_currency.errors %}
-                <p class="err-msg">
-                    {{ error }}
-                </p>
-            {% endfor %} 
-        </div>
+            <div class="field">
+                {{ validacion.to_currency.label }}
+                {{validacion.to_currency(value=to_currency)}}
+                {% for error in validacion.to_currency.errors %}
+                    <p class="err-msg">
+                        {{ error }}
+                    </p>
+                {% endfor %} 
+            </div>
 
             <div class="field">
                 {{ validacion.from_quantity.label }}
@@ -40,15 +40,19 @@
                 {% endfor %} 
             </div>
 
-                <div class="field">
-                    {{ validacion.to_quantity.label }}
-                    {{validacion.to_quantity(class="error-data" if validacion.to_quantity.errors else "")}}
-                    {% for error in validacion.to_quantity.errors %}
-                        <p class="err-msg">
-                            {{ error }}
-                        </p>
-                    {% endfor %} 
-                </div>
+            <div class="field">
+                {{ validacion.to_quantity.label }}
+                {{validacion.to_quantity(class="error-data" if validacion.to_quantity.errors else "")}}
+                {% for error in validacion.to_quantity.errors %}
+                    <p class="err-msg">
+                        {{ error }}
+                    </p>
+                {% endfor %} 
+            </div>
+
+            
+
+                
 
                     <div class="field">
                         {{ validacion.p_u.label }}

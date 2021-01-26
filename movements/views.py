@@ -3,8 +3,9 @@ from movements import app
 from movements.validacion import Validacion
 import sqlite3
 from datetime import date
-from requests import Request, Session
+import requests
 import json
+from movements.api import consulta_api
 
 DB_FILE = app.config["DB_FILE"]
 API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
@@ -83,24 +84,24 @@ def compra_venta():
             except:
                 return render_template ('compra_criptos.html', validacion=validacion)       
         else:
-            
+            print ("Soy la calculadora")
             amount = request.form.get('from_quantity')
             symbol = request.form.get('from_currency')  
             convert = request.form.get('to_currency')
             API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
+            print (amount)
+            print(symbol)
+            print(convert)
+        
             try:
                 url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
-                respuesta = requests.get(url)
-                if respuesta.status_code == 200:
-                    datos = respuesta.json()
-                else: 
-                    print ('Error', respuesta.status)
-                    
-                to_quantity = datos['data']['quote'][convert]['price']
-                p_u = float(amount)/to_quantity
+                respuesta = consulta_api(url)
+
+                to_quantity = respuesta['data']['quote'][convert]['price']
+                p_u = (amount)/to_quantity
                 
-                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) #Sino es un POST se sale y vuelve a la pagina de creación de altas
+                return render_template ("compra_criptos.html", comprobar = "si", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
             except:
-                return render_template ('compra_criptos.html', validacion=validacion)
+                return render_template ('compra_criptos.html', comprobar = "no", validacion=validacion)
     
     
