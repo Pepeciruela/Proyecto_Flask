@@ -49,55 +49,45 @@ def index():
 
 @app.route("/purchase", methods=["GET", "POST"])
 def compra_venta():
-    if request.method == 'GET':
+    if request.method == 'GET': # 1º Validamos las monedas disponibles para comprar
         criptomonedas = ('EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX')
         monedas = consulta("SELECT DISTINCT to_currency FROM criptomonedas;")
-        print (monedas[0])
         lista_monedas = []
-        for moneda in monedas:
-            for k,v in moneda:
-                print (v)
-            
-                
-            
-            
-        
-        validacion = Validacion()
-        validacion.to_currency.choices = monedas
-        
-        
-        return render_template('compra_criptos.html', validacion = validacion)
-        
-        
-        
-    """if request.method == "POST":
-        validacion = Validacion()
-        
-        validacion.from_currency.choices = [request.validacion.get('from_currency')]
-        validacion.to_currency.choices = [request.validacion.get('to_currency')]
-        #monedero --> hacer una funcion para calcular las moneadas disponibes con un select
-        
-        if request.validacion.get('submit') == 'Aceptar' and validacion.validate():
-            try:
-                consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
-                        (request.validacion.get('date'), 
-                        request.validacion.get('time'), 
-                        request.validacion.get('from_currency'), 
-                        request.validacion.get('from_quantity'),
-                        request.validacion.get('to_currency'), 
-                        request.validacion.get('to_quantity')
-                        ))
-                return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
-            except:
-                return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+        if not monedas:
+            lista_monedas.append('EUR')
         else:
+            for moneda in monedas:
+                for k,v in moneda.items():
+                    lista_monedas.append(v)
+            lista_monedas.append('EUR')
+                    
+        validacion = Validacion()
+        validacion.from_currency.choices = lista_monedas
+        return render_template('compra_criptos.html', validacion = validacion)
+    #2º validar que para la casilla from_quantity, solo se pueda coger el valor existente de to_cuantity en las diferentes monedas y poner a EURO infinito
+        
+    else: # Si el metodo es POST
+        validacion = Validacion()
+        if validacion.validate():
+            consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity) VALUES(?, ?, ?, ?, ?, ?);", 
+                    (validacion.date, 
+                    validacion.time, 
+                    request.form.get("from_currency"), 
+                    request.form.get("from_quantity"),
+                    request.form.get("to_currency"), 
+                    request.form.get("to_quantity"),
+                    ))
+            return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
+        else:
+            return render_template ('compra_criptos.html', validacion=validacion)
+        
+            """return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio"""
+        """else:
             
-            amount = request.validacion.get('from_quantity')
-            symbol = request.validacion.get('from_currency')  
-            convert = request.validacion.get('to_currency')
+            amount = request.form.get('from_quantity')
+            symbol = request.form.get('from_currency')  
+            convert = request.form.get('to_currency')
             API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
-            
-            
             try:
                 url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
                 respuesta = requests.get(url)
