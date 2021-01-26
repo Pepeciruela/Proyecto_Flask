@@ -53,14 +53,13 @@ def compra_venta():
         criptomonedas = ('EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX')
         monedas = consulta("SELECT DISTINCT to_currency FROM criptomonedas;")
         print (monedas[0])
-        """lista_monedas = []
-        for moneda in range(len(monedas)):
-            for i in moneda:
-                if i not in criptomonedas:
-                    print (i, "no está dentro de criptomonedas")
-                else:
-                    lista_monedas.append(i)
-        print (lista_monedas)"""
+        lista_monedas = []
+        for moneda in monedas:
+            for k,v in moneda:
+                print (v)
+            
+                
+            
             
         
         validacion = Validacion()
