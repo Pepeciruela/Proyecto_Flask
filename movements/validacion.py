@@ -13,8 +13,8 @@ class Validacion(FlaskForm):
     from_currency = SelectField ('From:', choices= criptomonedas, validators = [DataRequired()])
     to_currency = SelectField ('To:', choices= criptomonedas, validators=[DataRequired()])
     from_quantity = FloatField ('Q', validators = [DataRequired()])
-    to_quantity = FloatField('Q', render_kw={'readonly': True})
-    p_u = FloatField('P.U.', render_kw={'readonly': True})
+    to_quantity = FloatField('Q')
+    p_u = FloatField('P.U.')
     
     calculadora = SubmitField('Calculadora')
     

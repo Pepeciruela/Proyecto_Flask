@@ -8,11 +8,9 @@
     <form action = "{{url_for('compra_venta')}}" method="POST">
         {{validacion.hidden_tag()}}
         
-        
-
             <div class="field">
                 {{ validacion.from_currency.label }}
-                {{validacion.from_currency(class="error-data" if validacion.from_currency.errors else "")}}
+                {{validacion.from_currency}}
                 {% for error in validacion.from_currency.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -22,7 +20,7 @@
 
             <div class="field">
                 {{ validacion.to_currency.label }}
-                {{validacion.to_currency(value=to_currency)}}
+                {{validacion.to_currency}}
                 {% for error in validacion.to_currency.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -32,7 +30,7 @@
 
             <div class="field">
                 {{ validacion.from_quantity.label }}
-                {{validacion.from_quantity(class="error-data" if validacion.from_quantity.errors else "")}}
+                {{validacion.from_quantity}}
                 {% for error in validacion.from_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -41,41 +39,41 @@
             </div>
 
             <div class="field">
-                {{ validacion.to_quantity.label }}
-                {{validacion.to_quantity(class="error-data" if validacion.to_quantity.errors else "")}}
+                {{ validacion.to_quantity.label }}   
+                {% if to_quantity %}
+                    {{validacion.to_quantity(value = '{:.6f}'.format(to_quantity), readonly = "readonly" )}}
+                {% endif %}
                 {% for error in validacion.to_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
                     </p>
                 {% endfor %} 
             </div>
-
             
+            <div class="field">
+                {{ validacion.p_u.label }}
+                {% if p_u %}
+                    {{validacion.p_u(value = '{:.6f}'.format(p_u), readonly = "readonly" )}}
+                {% endif %}
+                {% for error in validacion.p_u.errors %}
+                <p class="err-msg">
+                        {{ error }}
+                        </p>
+                    {% endfor %} 
+            </div>
 
-                
+            <div class="field">
+                {{ validacion.calculadora }}   
+            </div>
 
-                    <div class="field">
-                        {{ validacion.p_u.label }}
-                        {{validacion.p_u(class="error-data" if validacion.p_u.errors else "")}}
-                        {% for error in validacion.p_u.errors %}
-                            <p class="err-msg">
-                                {{ error }}
-                            </p>
-                        {% endfor %} 
-                    </div>
-
-                    <div class="field">
-                            {{ validacion.calculadora }}   
-                    </div>
-
-                    <div class="field">
-                        {{ validacion.submit }}
-                        {% for error in validacion.submit.errors %}
-                            <p class="err-msg">
-                                {{ error }}
-                            </p>
-                        {% endfor %}    
-                </div>
+            <div class="field">
+                {{ validacion.submit }}
+                {% for error in validacion.submit.errors %}
+                <p class="err-msg">
+                    {{ error }}
+                    </p>
+                {% endfor %}    
+            </div>
 
         
         </form>

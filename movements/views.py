@@ -8,7 +8,7 @@ import json
 from movements.api import consulta_api
 
 DB_FILE = app.config["DB_FILE"]
-API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
+API_KEY = app.config["API_KEY"]
 
 def consulta(query, params=()):
     #CONECTAMOS CON LA BASE DE DATOS
@@ -69,7 +69,7 @@ def compra_venta():
         
     else: # Si el metodo es POST
         validacion = Validacion()
-        if request.form.get("submit") == "Aceptar" and validacion.validate():
+        if request.form.get("submit") == "Aceptar" and validacion.validate(): # Si le damos a Aceptar guardamos los datos en la BBDD
             try:
                 consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity, p_u) VALUES(?, ?, ?, ?, ?, ?, ?);", 
                         (validacion.date, 
@@ -83,25 +83,25 @@ def compra_venta():
                 return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
             except:
                 return render_template ('compra_criptos.html', validacion=validacion)       
-        else:
-            print ("Soy la calculadora")
+        else: # Si le damos a la calculadora, llamamos a la API
             amount = request.form.get('from_quantity')
             symbol = request.form.get('from_currency')  
             convert = request.form.get('to_currency')
-            API_KEY = '8c547a52-a34e-4549-9dd2-90fe0266d0af'
+            API_KEY = app.config["API_KEY"]
             print (amount)
             print(symbol)
             print(convert)
         
             try:
                 url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
-                respuesta = consulta_api(url)
-
-                to_quantity = respuesta['data']['quote'][convert]['price']
-                p_u = (amount)/to_quantity
-                
-                return render_template ("compra_criptos.html", comprobar = "si", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
+                respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                print ('He pasado por aquí')
+                to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
+                print ('To_quantity es', to_quantity)
+                p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
+                print ('P.U es', p_u)
+                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
             except:
-                return render_template ('compra_criptos.html', comprobar = "no", validacion=validacion)
+                return render_template ('compra_criptos.html', validacion=validacion)
     
     
