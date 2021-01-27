@@ -7,8 +7,7 @@ import requests
 class Validacion(FlaskForm):
     criptomonedas = ['EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX']
     
-    date = datetime.now().strftime("%d/%m/%Y")
-    time = datetime.now().strftime("%H:%M:%S")
+    
     
     from_currency = SelectField ('From:', choices= criptomonedas, validators = [DataRequired()])
     to_currency = SelectField ('To:', choices= criptomonedas, validators=[DataRequired()])

@@ -7,6 +7,7 @@
 <div class="card card-body">
     <form action = "{{url_for('compra_venta')}}" method="POST">
         {{validacion.hidden_tag()}}
+        {{validacion.csrf_token}}
         
             <div class="field">
                 {{ validacion.from_currency.label }}
@@ -30,7 +31,7 @@
 
             <div class="field">
                 {{ validacion.from_quantity.label }}
-                {{validacion.from_quantity}}
+                {{ validacion.from_quantity }}
                 {% for error in validacion.from_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -40,7 +41,9 @@
 
             <div class="field">
                 {{ validacion.to_quantity.label }}   
-                {% if to_quantity %}
+                {% if not to_quantity %}
+                    {{validacion.to_quantity}}
+                {% else %}
                     {{validacion.to_quantity(value = '{:.6f}'.format(to_quantity), readonly = "readonly" )}}
                 {% endif %}
                 {% for error in validacion.to_quantity.errors %}
@@ -52,7 +55,9 @@
             
             <div class="field">
                 {{ validacion.p_u.label }}
-                {% if p_u %}
+                {% if not p_u %}
+                    {{validacion.p_u}}
+                {% else %}
                     {{validacion.p_u(value = '{:.6f}'.format(p_u), readonly = "readonly" )}}
                 {% endif %}
                 {% for error in validacion.p_u.errors %}

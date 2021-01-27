@@ -2,7 +2,7 @@ from flask import render_template, request, url_for, redirect
 from movements import app
 from movements.validacion import Validacion
 import sqlite3
-from datetime import date
+from datetime import datetime, date, time
 import requests
 import json
 from movements.api import consulta_api
@@ -60,7 +60,8 @@ def compra_venta():
             for moneda in monedas:
                 for k,v in moneda.items():
                     lista_monedas.append(v)
-            lista_monedas.append('EUR')
+            if not "EUR" in lista_monedas:
+                lista_monedas.append('EUR')
                     
         validacion = Validacion()
         validacion.from_currency.choices = lista_monedas
@@ -72,8 +73,8 @@ def compra_venta():
         if request.form.get("submit") == "Aceptar" and validacion.validate(): # Si le damos a Aceptar guardamos los datos en la BBDD
             try:
                 consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity, p_u) VALUES(?, ?, ?, ?, ?, ?, ?);", 
-                        (validacion.date, 
-                        validacion.time, 
+                        (datetime.now().strftime("%d/%m/%Y"), 
+                        datetime.now().strftime("%H:%M:%S"), 
                         request.form.get("from_currency"), 
                         request.form.get("from_quantity"),
                         request.form.get("to_currency"), 
@@ -87,21 +88,23 @@ def compra_venta():
             amount = request.form.get('from_quantity')
             symbol = request.form.get('from_currency')  
             convert = request.form.get('to_currency')
-            API_KEY = app.config["API_KEY"]
             print (amount)
             print(symbol)
             print(convert)
-        
-            try:
-                url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
-                respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
-                print ('He pasado por aquí')
-                to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
-                print ('To_quantity es', to_quantity)
-                p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
-                print ('P.U es', p_u)
-                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
-            except:
+            if symbol != convert:
+                try:
+                    url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
+                    respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                    print ('He pasado por aquí')
+                    to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
+                    print ('To_quantity es', to_quantity)
+                    p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
+                    print ('P.U es', p_u)
+                    return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
+                except:
+                    return render_template ('compra_criptos.html', validacion=validacion)
+            else:
                 return render_template ('compra_criptos.html', validacion=validacion)
+                
     
     
