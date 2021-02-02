@@ -10,8 +10,12 @@
         {{validacion.csrf_token}}
         
             <div class="field">
-                {{ validacion.from_currency.label }}
-                {{validacion.from_currency}}
+                {{ validacion.from_currency.label(class="label") }}
+                {% if not to_quantity %}
+                    {{validacion.from_currency()}}
+                {% else %}
+                    {{validacion.from_currency(disabled=True, readonly = "readonly")}}
+                {% endif %}
                 {% for error in validacion.from_currency.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -20,8 +24,12 @@
             </div>
 
             <div class="field">
-                {{ validacion.to_currency.label }}
-                {{validacion.to_currency}}
+                {{ validacion.to_currency.label(class="label") }}
+                {% if not to_quantity %}
+                    {{validacion.to_currency()}}
+                {% else %}  
+                    {{validacion.to_currency(disabled=True, readonly = "readonly")}}
+                {% endif %}
                 {% for error in validacion.to_currency.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -30,8 +38,12 @@
             </div>
 
             <div class="field">
-                {{ validacion.from_quantity.label }}
-                {{ validacion.from_quantity }}
+                {{ validacion.from_quantity.label(class="label") }}
+                {% if not to_quantity %}
+                    {{ validacion.from_quantity}}
+                {% else %} 
+                    {{ validacion.from_quantity (disabled=True, readonly = "readonly") }}
+                {% endif %}
                 {% for error in validacion.from_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
@@ -40,7 +52,7 @@
             </div>
 
             <div class="field">
-                {{ validacion.to_quantity.label }}   
+                {{ validacion.to_quantity.label (class="label") }}   
                 {% if not to_quantity %}
                     {{validacion.to_quantity}}
                 {% else %}
@@ -54,7 +66,7 @@
             </div>
             
             <div class="field">
-                {{ validacion.p_u.label }}
+                {{ validacion.p_u.label (class="label") }}
                 {% if not p_u %}
                     {{validacion.p_u}}
                 {% else %}
@@ -68,11 +80,25 @@
             </div>
 
             <div class="field">
-                {{ validacion.calculadora }}   
+                {% if not to_quantity %}
+                    {{validacion.calculadora(class = "calc")}}
+                {% else %}
+                    {{validacion.calculadora(class = "calc", disabled=True)}}
+                {% endif %}
+                {% for error in validacion.to_quantity.errors %}
+                    <p class="err-msg">
+                        {{ error }}
+                    </p>
+                {% endfor %} 
+
             </div>
 
             <div class="field">
-                {{ validacion.submit }}
+                {% if not to_quantity %}
+                    {{validacion.submit(class = "sub", disabled=True)}}
+                {% else %}
+                    {{validacion.submit(class = "sub")}}
+                {% endif %}
                 {% for error in validacion.submit.errors %}
                 <p class="err-msg">
                     {{ error }}
@@ -80,11 +106,19 @@
                 {% endfor %}    
             </div>
 
-        
+            <div class="field">
+                {% if not to_quantity %}
+                    {{validacion.volver(class = "volver", disabled=True)}}
+                {% else %}
+                    {{validacion.volver(class = "volver")}}
+                {% endif %}
+                {% for error in validacion.volver.errors %}
+                <p class="err-msg">
+                    {{ error }}
+                    </p>
+                {% endfor %}    
+            </div>
         </form>
     </div>
     
-    
-    
-
 {%endblock%}

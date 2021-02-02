@@ -5,7 +5,7 @@ from datetime import datetime, date, time
 import requests
 import json
 from movements.api import consulta_api
-from movements.funciones import *
+from movements.funciones import * 
 
 API_KEY = app.config["API_KEY"]
 
@@ -29,7 +29,7 @@ def compra_venta():
                     lista_monedas.append(v)
             if not "EUR" in lista_monedas:
                 lista_monedas.append('EUR')
-                    
+                
         validacion = Validacion()
         validacion.from_currency.choices = lista_monedas
 
@@ -54,23 +54,51 @@ def compra_venta():
                 return render_template ('compra_criptos.html', validacion=validacion)       
         else: # Si le damos a la calculadora, llamamos a la API
             amount = request.form.get('from_quantity')
-            symbol = request.form.get('from_currency')  
+            symbol = request.form.get('from_currency')
             convert = request.form.get('to_currency')
             
-            if symbol != convert: 
-                try:
-                    url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
-                    respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
-                    
-                    to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
-                    
-                    p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
-                    
-                    return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
-                except:
-                    return render_template ('compra_criptos.html', validacion=validacion)
+            valor1 = [symbol]
+            valor2 = [amount]
+            
+            comprobacion = dict(zip(valor1, valor2))
+            
+            #AQUI COMPROBAMOS QUE EL AMOUNT DISPONIBLE SEA EL QUE TENEMOS DENTRO DE RESERVA_MONEDAS
+            hucha = monedas_disponibles()
+            monedas_saldo = {}
+            for moneda in hucha:
+                if hucha[moneda] > 0:
+                    monedas_saldo[moneda] = hucha[moneda]
+            
+            lista_comprobacion = list(comprobacion.items())
+            print ("soy l_c: ", lista_comprobacion)
+            lista_hucha = list(monedas_saldo.items())
+            print ("soy l_h: ", lista_hucha)
+            
+            for clave in lista_comprobacion:
+                print ("Soy clave: ", clave)
+                #print ("Soy valor: ", valor)
+                for otra_clave in lista_hucha:
+                    print ("Soy otra_clave: ", otra_clave)
+                    if clave[0] == otra_clave[0]:
+                        print (clave[0])
+                        if int(clave[1]) <= int(otra_clave[1]):
+                            print (clave[1], "es menor que ", otra_clave[1])
+                        else:
+                            raise ValueError("No tienes suficientes monedas para realizar esta compra")
+                        
+            try:
+                url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
+                respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                                    
+                to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
+                                    
+                p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
+                                    
+                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
+            except:
+                return render_template ('compra_criptos.html', validacion=validacion)
             else:
                 return render_template ('compra_criptos.html', validacion=validacion)
-                
+                    
     
     

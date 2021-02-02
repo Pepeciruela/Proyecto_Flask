@@ -38,23 +38,13 @@ def consulta(query, params=()):
 
 def monedas_disponibles():
     criptos_disponibles = {'EUR': 100000 ,'BTC': 0,'ETH': 0,'XRP': 0,'LTC': 0,'BCH': 0,'BNB': 0,'USTD': 0,'EOS': 0,'BSV': 0,'XLM': 0,'ADA': 0,'TRX': 0}
-        criptomonedas_disponibles = ('EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX')
-        operaciones = consulta("SELECT to_currency, to_quantity FROM criptomonedas;")
-        lista_monedas = []
-        lista_valores = []
-        for operacion in operaciones:
-            for k, v in operacion.items():
-                if v in criptomonedas_disponibles:
-                    lista_monedas.append(v)
-                else:
-                    lista_valores.append(v)
-        
-        diccionario_monedas = dict()
-        for i in range (len(lista_monedas)):
-            diccionario_monedas[lista_monedas[i]] = lista_valores[i]
-            
-        reserva_monedas = Counter(criptos_disponibles) + Counter(diccionario_monedas)    
-
+    lista_movimientos = consulta('SELECT * FROM criptomonedas')
     
+    for movimiento in lista_movimientos:
+        criptos_disponibles[movimiento['from_currency']] = criptos_disponibles[movimiento['from_currency']] - movimiento['from_quantity']
+        criptos_disponibles[movimiento['to_currency']] = criptos_disponibles[movimiento['to_currency']] + movimiento['to_quantity']
+    
+    return criptos_disponibles    
+
     
     
