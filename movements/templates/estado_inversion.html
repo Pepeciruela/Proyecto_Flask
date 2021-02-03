@@ -1,0 +1,26 @@
+{% extends 'index.html' %} 
+
+{% block title %} Estado de las inversiones {% endblock %}
+
+{%block content%} 
+
+<div class="card card-body">
+    <form action = "{{url_for('estado_inversiones')}}" method="GET">
+</div>   
+
+<div>
+    <p>EUROS INVERTIDOS</p>
+    <p>{{suma_invertidos}}</p>
+</div>
+
+<div>
+    <p>VALOR ACTUAL</p>
+    <p>{{valor_actual}}</p>
+</div>
+
+<div>
+    <p>RENTABILIDAD</p>
+    <p>{{rentabilidad}}</p>
+</div>
+    
+{%endblock%}

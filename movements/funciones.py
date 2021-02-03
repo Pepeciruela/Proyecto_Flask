@@ -1,11 +1,11 @@
 from movements import app
 import sqlite3
-from collections import Counter
 
 
-DB_FILE = app.config["DB_FILE"]
+
 
 def consulta(query, params=()):
+    DB_FILE = app.config["DB_FILE"]
     #CONECTAMOS CON LA BASE DE DATOS
     conn = sqlite3.connect(DB_FILE)
     #CREAR EL CURSOS
@@ -46,5 +46,35 @@ def monedas_disponibles():
     
     return criptos_disponibles    
 
+def monedas_inicio():
+    criptomonedas = ('EUR','BTC','ETH','XRP','LTC','BCH','BNB','USTD','EOS','BSV','XLM','ADA','TRX')
+    monedas = consulta("SELECT DISTINCT to_currency FROM criptomonedas;")
+    lista_monedas = []
+    if not monedas:
+        lista_monedas.append('EUR')
+    else:
+        for moneda in monedas:
+            for k,v in moneda.items():
+                lista_monedas.append(v)
+        if not "EUR" in lista_monedas:
+            lista_monedas.append('EUR')
+    return lista_monedas
     
+def monedas_invertidas():
+    monedas_disponibles = {'EUR': 300000 ,'BTC': 0,'ETH': 0,'XRP': 0,'LTC': 0,'BCH': 0,'BNB': 0,'USTD': 0,'EOS': 0,'BSV': 0,'XLM': 0,'ADA': 0,'TRX': 0}
+    lista_movimientos = consulta('SELECT * FROM criptomonedas')
     
+    for movimiento in lista_movimientos:
+        monedas_disponibles[movimiento['from_currency']] = monedas_disponibles[movimiento['from_currency']] - movimiento['from_quantity']
+        monedas_disponibles[movimiento['to_currency']] = monedas_disponibles[movimiento['to_currency']] + movimiento['to_quantity']
+    
+    return monedas_disponibles 
+
+def euros_invertidos():
+    monedas_disponibles = {'EUR': 0 ,'BTC': 0,'ETH': 0,'XRP': 0,'LTC': 0,'BCH': 0,'BNB': 0,'USTD': 0,'EOS': 0,'BSV': 0,'XLM': 0,'ADA': 0,'TRX': 0}
+    lista_movimientos = consulta('SELECT * FROM criptomonedas')
+    
+    for movimiento in lista_movimientos:
+        monedas_disponibles[movimiento['from_currency']] = monedas_disponibles[movimiento['from_currency']] + movimiento['from_quantity']
+    
+    return monedas_disponibles     

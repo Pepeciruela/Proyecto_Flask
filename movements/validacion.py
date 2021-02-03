@@ -12,11 +12,13 @@ class Validacion(FlaskForm):
     to_currency = SelectField ('To:', choices= criptomonedas, validators=[DataRequired()])
     
     from_quantity = FloatField ('Q', validators = [DataRequired()])
+    
     to_quantity = FloatField('Q')
+    
     p_u = FloatField('P.U.')
     
     calculadora = SubmitField('Calculadora')
     
     submit = SubmitField('Aceptar')
     
-    volver = SubmitField('Volver')
+    #volver = SubmitField('Volver')
