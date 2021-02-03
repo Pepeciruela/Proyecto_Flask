@@ -1,9 +1,17 @@
 {% extends 'index.html' %} 
 
 {% block title %} Compra de criptos {% endblock %}
-
+<header>
+    <div class="header_proyecto">Proyecto Flask - Criptomonedas</div>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="">Compra</a></li>
+            <li><a href="/status">Status</a></li>
+        </ul>
+    </nav>
+</header>
 {%block content%} 
-
 <div class="card card-body">
     <form action = "{{url_for('compra_venta')}}" method="POST">
         {{validacion.hidden_tag()}}
@@ -18,9 +26,8 @@
                 </div>
                 {% endif %}
             {% endwith %}
-            
         </div>
-        
+        {% if not vacio %}
             <div class="field">
                 {{ validacion.from_currency.label(class="label") }}
                 {% if not to_quantity %}
@@ -50,23 +57,20 @@
             </div>
 
             <div class="field">
-                <label>
                 {{ validacion.from_quantity.label}}
                 {% if not to_quantity %}
                     {{ validacion.from_quantity}}
                 {% else %} 
-                    {{ validacion.from_quantity () }}
+                    {{ validacion.from_quantity (readonly = "readonly") }}
                 {% endif %}
                 {% for error in validacion.from_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
                     </p>
                 {% endfor %} 
-            </label>
             </div>
 
             <div class="field">
-                <label>
                 {{ validacion.to_quantity.label (input, type="text") }}   
                 {% if not to_quantity %}
                     {{validacion.to_quantity(readonly = "readonly")}}
@@ -78,7 +82,6 @@
                         {{ error }}
                     </p>
                 {% endfor %} 
-            </label>
             </div>
             
             <div class="field">
@@ -86,7 +89,7 @@
                 {% if not p_u %}
                     {{validacion.p_u(readonly = "readonly")}}
                 {% else %}
-                    {{validacion.p_u(value = '{:.6f}'.format(p_u) )}}
+                    {{validacion.p_u(value = '{:.6f}'.format(p_u), readonly = "readonly" )}}
                 {% endif %}
                 {% for error in validacion.p_u.errors %}
                 <p class="err-msg">
@@ -135,5 +138,101 @@
             </div>
         </form>
     </div>
+    {% else %}
+    <div class="field">
+        {{ validacion.from_currency.label(class="label") }}
+        {% if not to_quantity %}
+            {{validacion.from_currency(value=lista_monedas)}}
+        {% else %}
+            {{validacion.from_currency(readonly = "readonly")}}
+        {% endif %}
+        {% for error in validacion.from_currency.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </div>
+
+    <div class="field">
+        {{ validacion.to_currency.label(class="label") }}
+        {% if not to_quantity %}
+            {{validacion.to_currency()}}
+        {% else %}  
+            {{validacion.to_currency(readonly = "readonly")}}
+        {% endif %}
+        {% for error in validacion.to_currency.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %} 
+    </div>
+
+    <div class="field">
+        {{ validacion.from_quantity.label}}
+        {{ validacion.from_quantity(value="")}}
+        {% for error in validacion.from_quantity.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %} 
+    </div>
+
+    <div class="field">
+        {{ validacion.to_quantity.label}}   
+        {{validacion.to_quantity(value="", readonly = "readonly")}}
+        {% for error in validacion.to_quantity.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %} 
+    </div>
     
+    <div class="field">
+        {{ validacion.p_u.label (class="input") }}
+        {{validacion.p_u(value="", readonly = "readonly")}}
+        {% for error in validacion.p_u.errors %}
+        <p class="err-msg">
+                {{ error }}
+                </p>
+            {% endfor %} 
+    </div>
+
+    <div class="field">
+        {% if not to_quantity %}
+            {{validacion.calculadora(class = "calc")}}
+        {% else %}
+            {{validacion.calculadora(class = "calc", disabled=True)}}
+        {% endif %}
+        {% for error in validacion.to_quantity.errors %}
+            <p class="err-msg">
+                {{ error }}
+            </p>
+        {% endfor %} 
+    </div>
+
+    <div class="field">
+        {% if not to_quantity %}
+            {{validacion.submit(class = "sub", disabled=True)}}
+        {% else %}
+            {{validacion.submit(class = "sub")}}
+        {% endif %}
+        {% for error in validacion.submit.errors %}
+        <p class="err-msg">
+            {{ error }}
+            </p>
+        {% endfor %}    
+    </div>
+
+    <div class="field">
+        {% if not to_quantity %}
+            {{validacion.volver(class = "volver", disabled=True)}}
+        {% else %}
+            {{validacion.volver(class = "volver")}}
+        {% endif %}
+        {% for error in validacion.volver.errors %}
+        <p class="err-msg">
+            {{ error }}
+            </p>
+        {% endfor %} 
+{% endif %} 
 {%endblock%}

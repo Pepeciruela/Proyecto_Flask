@@ -91,8 +91,8 @@ def compra_venta():
             validar_monedas = monedas_inicio()
             validacion = Validacion()
             validacion.from_currency.choices = validar_monedas
-            
-            return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas)
+            vacio=True
+            return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas, vacio=vacio)
                               
 @app.route("/status")
 def estado_inversiones():
