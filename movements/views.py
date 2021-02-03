@@ -1,4 +1,4 @@
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, flash
 from movements import app
 from movements.validacion import Validacion
 from datetime import datetime, date, time
@@ -42,40 +42,39 @@ def compra_venta():
             for moneda in hucha:
                 if hucha[moneda] > 0:
                     monedas_saldo[moneda] = hucha[moneda]
-                
-            lista_comprobacion = list(comprobacion.items())
-            print ("soy l_c: ", lista_comprobacion)
-            lista_hucha = list(monedas_saldo.items())
-            print ("soy l_h: ", lista_hucha)
-                
-            for clave in lista_comprobacion:
-                print ("Soy clave: ", clave)
-                for otra_clave in lista_hucha:
-                    print ("Soy otra_clave: ", otra_clave)
-                    if clave[0] == otra_clave[0]:
-                        print (clave[0])
-                        if int(clave[1]) <= int(otra_clave[1]):
-                            print (clave[1], "es menor que ", otra_clave[1])
-                        else:
-                            raise ValueError("No tienes suficientes monedas para realizar esta compra")
                             
             if symbol != convert:
-                url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
-                respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
-                                            
-                to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
-                                            
-                p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
-                                            
-                return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
-            else:
-                validar_monedas = monedas_inicio()
-                validacion = Validacion()
-                validacion.from_currency.choices = validar_monedas
-                return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas)
+                lista_comprobacion = list(comprobacion.items())
+                lista_hucha = list(monedas_saldo.items())
+            #HACER ALGO PARA QUE SI NO HAY MONEDAS SUFICIENTES RETORNE UN MENSAJE Y DE ERROR
+                for clave in lista_comprobacion:
+                    for otra_clave in lista_hucha:
+                        if clave[0] == otra_clave[0]:
+                            if int(clave[1]) <= int(otra_clave[1]):
+                                print ("Hay dinero de sobra")
+                                try: 
+                                    url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
+                                    respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                                                    
+                                    to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
+                                                    
+                                    p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
+                                                    
+                                    return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
+                                except:
+                                    validar_monedas = monedas_inicio()
+                                    validacion = Validacion()
+                                    validacion.from_currency.choices = validar_monedas
+                                    return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas)
+                            else:
+                                flash("No tienes suficientes monedas para realizar esta compra")
+                                validar_monedas = monedas_inicio()
+                                validacion = Validacion()
+                                validacion.from_currency.choices = validar_monedas
+                                return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas)
+                
         elif request.form.get('submit') == 'Aceptar' and validacion.validate:
             
-            print ("he pasado por aqui")
             consulta("INSERT INTO criptomonedas(date, time, from_currency, from_quantity, to_currency, to_quantity, p_u) VALUES(?, ?, ?, ?, ?, ?, ?);", 
                     (datetime.now().strftime("%d/%m/%Y"), 
                     datetime.now().strftime("%H:%M:%S"), 
@@ -85,7 +84,6 @@ def compra_venta():
                     request.form.get("to_quantity"),
                     request.form.get("p_u"),
                     ))
-            print ("Y por aqui")
             return redirect(url_for("index")) #Si todos los datos están validados y son correctos, muestramelos en la función de inicio
             #except:
                 #return render_template ('compra_criptos.html', validacion=validacion)           
@@ -93,8 +91,9 @@ def compra_venta():
             validar_monedas = monedas_inicio()
             validacion = Validacion()
             validacion.from_currency.choices = validar_monedas
+            
             return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas)
-                      
+                              
 @app.route("/status")
 def estado_inversiones():
     if request.method == "GET":

@@ -21,4 +21,4 @@ class Validacion(FlaskForm):
     
     submit = SubmitField('Aceptar')
     
-    #volver = SubmitField('Volver')
+    volver = SubmitField('Volver')

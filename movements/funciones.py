@@ -77,4 +77,6 @@ def euros_invertidos():
     for movimiento in lista_movimientos:
         monedas_disponibles[movimiento['from_currency']] = monedas_disponibles[movimiento['from_currency']] + movimiento['from_quantity']
     
-    return monedas_disponibles     
+    return monedas_disponibles    
+
+     
