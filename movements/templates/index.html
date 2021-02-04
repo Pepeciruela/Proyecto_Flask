@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %} Compra y venta de Criptomonedas {% endblock %}
-<header>
-    <div class="header_proyecto">Proyecto Flask - Criptomonedas</div>
-    <nav>
-        <ul>
-            <li><a href="">Inicio</a></li>
-            <li><a href="/purchase">Compra</a></li>
-            <li><a href="/status">Status</a></li>
-        </ul>
-    </nav>
-</header>
+{% block title %} 
+
+Compra y venta de Criptomonedas 
+
+<div class="container">
+    <h1>Formulario de prueba</h1>
+    {% for mensaje in mensajes %}
+        <p class="err-msg">{{ mensaje }}</p>
+    {% endfor %}
+
+
+{% endblock %}
+
 {% block content %}
     <div class="title grid">
         <h1 class="title_text">Movimientos de compra y venta</h1>

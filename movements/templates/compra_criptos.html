@@ -1,16 +1,13 @@
 {% extends 'index.html' %} 
 
 {% block title %} Compra de criptos {% endblock %}
-<header>
-    <div class="header_proyecto">Proyecto Flask - Criptomonedas</div>
-    <nav>
-        <ul>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="">Compra</a></li>
-            <li><a href="/status">Status</a></li>
-        </ul>
-    </nav>
-</header>
+
+<div class="container">
+    <h1>Formulario de prueba</h1>
+    {% for mensaje in mensajes %}
+        <p class="err-msg">{{ mensaje }}</p>
+    {% endfor %}
+
 {%block content%} 
 <div class="card card-body">
     <form action = "{{url_for('compra_venta')}}" method="POST">

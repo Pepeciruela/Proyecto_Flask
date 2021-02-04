@@ -6,11 +6,16 @@
         <title>Criptos - {% block title %}{% endblock %}</title>
     </head>
     <body>
+        <div class="container">
+            <h1>Formulario de prueba</h1>
+            {% for mensaje in mensajes %}
+                <p class="err-msg">{{ mensaje }}</p>
+            {% endfor %}
         <header>
             <div class="header_proyecto">Proyecto Flask - Criptomonedas</div>
             <nav>
                 <ul>
-                    <li><a href="">Inicio</a></li>
+                    <li><a href="/">Inicio</a></li>
                     <li><a href="/purchase">Compra</a></li>
                     <li><a href="/status">Status</a></li>
                 </ul>
