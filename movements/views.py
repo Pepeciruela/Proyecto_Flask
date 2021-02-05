@@ -209,7 +209,7 @@ def estado_inversiones():
         valor_actual = suma_saldo + suma_cotizacion +  suma_invertidos
         
         print ("SOY LA SUMA TOTAL: ", valor_actual)
-        
+        #hacer consulta a la base de datos por si hay algo, sino hay nada return
         rentabilidad = 1-(suma_invertidos/valor_actual)        
                 
     return render_template('estado_inversion.html', suma_saldo=suma_saldo, suma_cotizacion=suma_cotizacion, suma_invertidos=suma_invertidos, valor_actual=valor_actual, rentabilidad=rentabilidad)

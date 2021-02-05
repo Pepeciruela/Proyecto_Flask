@@ -1,6 +1,6 @@
 {% extends 'index.html' %} 
 
-{% block title %} Compra de criptos {% endblock %}
+{% block title %}{% endblock %}
 
 <div class="container">
     <h1>Formulario de prueba</h1>
@@ -13,24 +13,15 @@
     <form action = "{{url_for('compra_venta')}}" method="POST">
         {{validacion.hidden_tag()}}
         {{validacion.csrf_token}}
-        <div>
-            {% with messages = get_flashed_messages()%}
-                {% if messages %}
-                <div class=error>
-                    {%for message in messages%}
-                    <li class = error>{{message}}</li>
-                    {%endfor%}
-                </div>
-                {% endif %}
-            {% endwith %}
-        </div>
+        
         {% if not vacio %}
+        
             <div class="field">
-                {{ validacion.from_currency.label(class="label") }}
+                <label for="exampleSelect1">FROM:</label>
                 {% if not to_quantity %}
-                    {{validacion.from_currency(value=lista_monedas)}}
+                    {{validacion.from_currency(value=lista_monedas, class="form-control", id="exampleSelect1")}}
                 {% else %}
-                    {{validacion.from_currency(readonly = "readonly")}}
+                    {{validacion.from_currency(readonly = "readonly", class="form-control", id="exampleSelect1")}}
                 {% endif %}
                 {% for error in validacion.from_currency.errors %}
                     <p class="err-msg">
@@ -38,13 +29,13 @@
                     </p>
                 {% endfor %}
             </div>
-
+            <br></br>
             <div class="field">
-                {{ validacion.to_currency.label(class="label") }}
+                <label for="exampleSelect1">TO:</label>
                 {% if not to_quantity %}
-                    {{validacion.to_currency()}}
+                    {{validacion.to_currency(class="form-control", id="exampleSelect1")}}
                 {% else %}  
-                    {{validacion.to_currency(readonly = "readonly")}}
+                    {{validacion.to_currency(readonly = "readonly", class="form-control", id="exampleSelect1")}}
                 {% endif %}
                 {% for error in validacion.to_currency.errors %}
                     <p class="err-msg">
@@ -52,13 +43,13 @@
                     </p>
                 {% endfor %} 
             </div>
-
+            <br></br>
             <div class="field">
                 {{ validacion.from_quantity.label}}
                 {% if not to_quantity %}
-                    {{ validacion.from_quantity}}
+                    {{ validacion.from_quantity(class="form-control")}}
                 {% else %} 
-                    {{ validacion.from_quantity (readonly = "readonly") }}
+                    {{ validacion.from_quantity (class="form-control", readonly = "readonly") }}
                 {% endif %}
                 {% for error in validacion.from_quantity.errors %}
                     <p class="err-msg">
@@ -66,13 +57,13 @@
                     </p>
                 {% endfor %} 
             </div>
-
+            <br></br>
             <div class="field">
-                {{ validacion.to_quantity.label (input, type="text") }}   
+                {{ validacion.to_quantity.label}}   
                 {% if not to_quantity %}
-                    {{validacion.to_quantity(readonly = "readonly")}}
+                    {{validacion.to_quantity(class="form-control", readonly = "readonly")}}
                 {% else %}
-                    {{validacion.to_quantity(value = '{:.6f}'.format(to_quantity), readonly = "readonly" )}}
+                    {{validacion.to_quantity(value = '{:.6f}'.format(to_quantity), readonly = "readonly", class="form-control" )}}
                 {% endif %}
                 {% for error in validacion.to_quantity.errors %}
                     <p class="err-msg">
@@ -80,13 +71,13 @@
                     </p>
                 {% endfor %} 
             </div>
-            
+            <br></br>
             <div class="field">
-                {{ validacion.p_u.label (class="input") }}
+                {{ validacion.p_u.label}}
                 {% if not p_u %}
-                    {{validacion.p_u(readonly = "readonly")}}
+                    {{validacion.p_u(readonly = "readonly", class="form-control")}}
                 {% else %}
-                    {{validacion.p_u(value = '{:.6f}'.format(p_u), readonly = "readonly" )}}
+                    {{validacion.p_u(value = '{:.6f}'.format(p_u), readonly = "readonly", class="form-control" )}}
                 {% endif %}
                 {% for error in validacion.p_u.errors %}
                 <p class="err-msg">
@@ -94,44 +85,40 @@
                         </p>
                     {% endfor %} 
             </div>
-
-            <div class="field">
+            <br></br>
+            <div class="botones">
                 {% if not to_quantity %}
-                    {{validacion.calculadora(class = "calc")}}
+                    {{validacion.calculadora(class="btn btn-primary fas fa-calculator")}}
                 {% else %}
-                    {{validacion.calculadora(class = "calc", disabled=True)}}
+                    {{validacion.calculadora(class="btn btn-primary fas fa-calculator", disabled=True)}}
                 {% endif %}
                 {% for error in validacion.to_quantity.errors %}
                     <p class="err-msg">
                         {{ error }}
                     </p>
-                {% endfor %} 
-            </div>
+                {% endfor %}
 
-            <div class="field">
                 {% if not to_quantity %}
-                    {{validacion.submit(class = "sub", disabled=True)}}
+                    {{validacion.submit(class = "btn btn-primary", disabled=True)}}
                 {% else %}
-                    {{validacion.submit(class = "sub")}}
+                    {{validacion.submit(class = "btn btn-primary")}}
                 {% endif %}
                 {% for error in validacion.submit.errors %}
-                <p class="err-msg">
-                    {{ error }}
+                    <p class="err-msg">
+                        {{ error }}
                     </p>
-                {% endfor %}    
-            </div>
+                {% endfor %}  
 
-            <div class="field">
                 {% if not to_quantity %}
-                    {{validacion.volver(class = "volver", disabled=True)}}
+                    {{validacion.volver(class = "btn btn-danger", disabled=True)}}
                 {% else %}
-                    {{validacion.volver(class = "volver")}}
+                    {{validacion.volver(class = "btn btn-danger")}}
                 {% endif %}
                 {% for error in validacion.volver.errors %}
                 <p class="err-msg">
                     {{ error }}
                     </p>
-                {% endfor %}    
+                {% endfor %}
             </div>
         </form>
     </div>

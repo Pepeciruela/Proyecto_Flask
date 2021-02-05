@@ -1,33 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Criptos - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/lux/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/main.css">
+        <link rel="stylesheet" href="/static/font-awesome.css">
+
+        <title>{% block title %}{% endblock %}</title>
     </head>
+
     <body>
         <div class="container">
-            <h1>Formulario de prueba</h1>
+          <div class="jumbotron">
+                <h1 class="display-4 text-center">Compra y venta de Criptomonedas</h1>
+          </div>
+
+          <div>
             {% for mensaje in mensajes %}
-                <p class="err-msg">{{ mensaje }}</p>
+                <p class="alert alert-dismissible alert-danger">{{ mensaje }}</p>
             {% endfor %}
-        <header>
-            <div class="header_proyecto">Proyecto Flask - Criptomonedas</div>
-            <nav>
-                <ul>
-                    <li><a href="/">Inicio</a></li>
-                    <li><a href="/purchase">Compra</a></li>
-                    <li><a href="/status">Status</a></li>
-                </ul>
-            </nav>
-        </header>
+          </div>
 
-        <div class="container">
-            {% block content %}{% endblock %}
-        </div>
 
-        <footer>
-            &copy; 2020 - 2021. Todos los derechos reservados
-        </footer>
+            <div>
+              {% with messages = get_flashed_messages()%}
+                  {% if messages %}
+                  <div class="alert alert-dismissible alert-danger">
+                      {%for message in messages%}
+                      <li class = "alert alert-dismissible alert-danger">{{message}}</li>
+                      {%endfor%}
+                  </div>
+                  {% endif %}
+              {% endwith %}
+          </div>
+
+
+            <header>
+              <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/">Inicio
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/purchase">Invertir</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/status">Estado de las inversiones</a>
+                    </li>
+            </header>
+<br></br>
+            <div class="container">
+                {% block content %}
+                
+    
+                
+                {% endblock %}
+                <br>
+            </div>
+            <footer>
+                &copy; 2020 - 2021. Todos los derechos reservados
+            </footer>
+            <br>
     </body>
 </html>

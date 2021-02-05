@@ -1,32 +1,62 @@
 {% extends 'index.html' %} 
 
-{% block title %} Estado de las inversiones {% endblock %}
-
-<div class="container">
-    <h1>Formulario de prueba</h1>
-    {% for mensaje in mensajes %}
-        <p class="err-msg">{{ mensaje }}</p>
-    {% endfor %}
+{% block title %} {% endblock %}
 
 {%block content%} 
-
 <div class="card card-body">
     <form action = "{{url_for('estado_inversiones')}}" method="GET">
-</div>   
-
+</div>
+<br> 
+<div class="container"></div>
+<br>
+<br>
+    <div>
+        <h1 class = "text-center">Estado de las inversiones</h1>
+    </div>
+</br>
+</br>  
+<div class="progress">
+    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
 <div>
-    <p>EUROS INVERTIDOS</p>
-    <p>{{suma_invertidos}}</p>
+
+<br>
+
+<div class="card-header">EUROS INVERTIDOS</div>
+<div class="card-body">
+  <h4 class="card-title">{{suma_invertidos}} €</h4>
+  <p class="card-text">Esta es la cantidad de euros que has invertido hasta el momento.</p>
 </div>
 
-<div>
-    <p>VALOR ACTUAL</p>
-    <p>{{valor_actual}}</p>
+<br>
+
+<div class="card-header">VALOR ACTUAL</div>
+<div class="card-body">
+  <h4 class="card-title">{{valor_actual}} €</h4>
+  <p class="card-text">Este es el valor actual de tu cartera en euros.</p>
 </div>
 
-<div>
-    <p>RENTABILIDAD</p>
-    <p>{{rentabilidad}}</p>
+<br>
+
+<div class="card-header">RENTABILIDAD</div>
+<div class="card-body">
+  <h4 class="card-title">{{rentabilidad}}</h4>
+  <p class="card-text">Esta es la rentabilidad actualizada de tu cartera.</p>
 </div>
+
+
+
     
 {%endblock%}
