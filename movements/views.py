@@ -43,7 +43,6 @@ def compra_venta():
             print("**ERROR**: Acceso a base de datos - consulta monedas disponibles al inicio: {} - {}". format(type(e).__name__, e))
             mensajes.append("Error en acceso a base de datos. Consulte con el administrador.")
             return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes)  
-        #validacion = Validacion()
         validacion.from_currency.choices = validar_monedas
        
         
@@ -87,7 +86,7 @@ def compra_venta():
                                         return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
                                                
                                     to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
-                                                    
+                                    #REDONDEAR AQUI LOS EUROS Y LAS MONEDAS                
                                     p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
                                                     
                                     return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
@@ -124,7 +123,6 @@ def compra_venta():
                 print("**ERROR**: Acceso a la base de datos - monedas disponibles: {} - {}". format(type(e).__name__, e))
                 mensajes.append("Error en acceso a la base de datos. Consulte con el administrador.")
                 return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = [], mensajes=mensajes )
-            #validacion = Validacion()
             validacion.from_currency.choices = validar_monedas
             vacio=True
             return render_template ('compra_criptos.html', validacion=validacion, validar_monedas = validar_monedas, vacio=vacio)

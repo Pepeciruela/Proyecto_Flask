@@ -88,9 +88,9 @@
             <br></br>
             <div class="botones">
                 {% if not to_quantity %}
-                    {{validacion.calculadora(class="btn btn-primary fas fa-calculator")}}
+                    {{validacion.calculadora(class= "btn btn-primary calculadora")}}
                 {% else %}
-                    {{validacion.calculadora(class="btn btn-primary fas fa-calculator", disabled=True)}}
+                    {{validacion.calculadora(class="btn btn-primary calculadora", disabled=True)}}
                 {% endif %}
                 {% for error in validacion.to_quantity.errors %}
                     <p class="err-msg">
@@ -183,9 +183,9 @@
 
     <div class="field">
         {% if not to_quantity %}
-            {{validacion.calculadora(class = "calc")}}
+            {{validacion.calculadora("btn btn-primary calculadora")}}
         {% else %}
-            {{validacion.calculadora(class = "calc", disabled=True)}}
+            {{validacion.calculadora("btn btn-primary calculadora", disabled=True)}}
         {% endif %}
         {% for error in validacion.to_quantity.errors %}
             <p class="err-msg">

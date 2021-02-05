@@ -13,4 +13,4 @@ class Validacion(FlaskForm):
     p_u = FloatField('PRECIO UNIDAD')
     calculadora = SubmitField('Calculadora')
     submit = SubmitField('Aceptar')
-    volver = SubmitField('Volver')
+    volver = SubmitField('Volver a calcular')
