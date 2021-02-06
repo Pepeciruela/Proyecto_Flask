@@ -87,12 +87,16 @@ def compra_venta():
                                                
                                     to_quantity = respuesta['data']['quote'][convert]['price']
                                     if convert == "EUR":
-                                        print ("{0:.2f}".format(to_quantity))
+                                        to_quantity = round(to_quantity, 2)
                                     else:
-                                        print ("{0:.8f}".format(to_quantity))
-                                    
-                                    #REDONDEAR AQUI LOS EUROS Y LAS MONEDAS                
-                                    p_u = float(amount)/to_quantity 
+                                        to_quantity = round(to_quantity, 8)
+                                
+                                                   
+                                    p_u = float(amount)/to_quantity
+                                    if convert == "EUR":
+                                        p_u = round(p_u, 2)
+                                    else:
+                                        p_u = round(p_u, 8) 
                                                     
                                     return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
                                 except:
