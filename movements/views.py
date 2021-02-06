@@ -6,6 +6,7 @@ import requests
 import json
 from movements.api import consulta_api
 from movements.funciones import * 
+import re
 
 API_KEY = app.config["API_KEY"]
 
@@ -45,9 +46,31 @@ def compra_venta():
             return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes)  
         validacion.from_currency.choices = validar_monedas
        
-        
         if request.form.get('calculadora') == 'Calculadora' and validacion.validate:
-            amount = request.form.get('from_quantity')
+            n_amount = request.form.get('from_quantity')
+            validadores=('0','1','2','3','4','5','6','7','8','9',',','.')
+            contador = 0
+            for i in n_amount:
+                if i in validadores:
+                    if i == ',' or i == '.':
+                        contador = contador +1
+                        if contador > 1:
+                            flash ("Ese no es un numero valido. Por favor repita la operacion")
+                            return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes)
+                        else:
+                            pass      
+                else:
+                    flash ("Ese no es un numero valido. Por favor repita la operacion")
+                    return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
+
+            try:
+                cambio = '[,]'
+                amount = re.sub(cambio, '.', n_amount)
+                print("Soy amount:", amount)
+            except:
+                flash("Ese no es un numero valido. Por favor repita la operacion")
+                return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
+
             symbol = request.form.get('from_currency')
             convert = request.form.get('to_currency')
                 
@@ -74,7 +97,7 @@ def compra_venta():
                 for clave in lista_comprobacion:
                     for otra_clave in lista_hucha:
                         if clave[0] == otra_clave[0]:
-                            if int(clave[1]) <= int(otra_clave[1]):
+                            if float(clave[1]) <= float(otra_clave[1]):
                                 print ("Hay dinero de sobra")
                                 try: 
                                     url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
