@@ -99,9 +99,9 @@
                 {% endfor %}
 
                 {% if not to_quantity %}
-                    {{validacion.submit(class = "btn btn-primary", disabled=True)}}
+                    {{validacion.submit(class = "btn btn-success", disabled=True)}}
                 {% else %}
-                    {{validacion.submit(class = "btn btn-primary")}}
+                    {{validacion.submit(class = "btn btn-success")}}
                 {% endif %}
                 {% for error in validacion.submit.errors %}
                     <p class="err-msg">
@@ -208,9 +208,9 @@
         {% endfor %}
 
         {% if not to_quantity %}
-            {{validacion.submit(class = "btn btn-primary", disabled=True)}}
+            {{validacion.submit(class = "btn btn-success", disabled=True)}}
         {% else %}
-            {{validacion.submit(class = "btn btn-primary")}}
+            {{validacion.submit(class = "btn btn-success")}}
         {% endif %}
         {% for error in validacion.submit.errors %}
             <p class="err-msg">
