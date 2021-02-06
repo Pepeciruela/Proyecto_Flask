@@ -24,7 +24,7 @@ def index():
 def compra_venta():
     mensajes =[]
     validacion = Validacion()
-    if request.method == 'GET': # 1º Validamos las monedas disponibles para comprar
+    if request.method == 'GET': 
         try: 
             validar_monedas = monedas_inicio()
         except Exception as e:
@@ -36,7 +36,7 @@ def compra_venta():
         
         return render_template('compra_criptos.html', validacion = validacion, validar_monedas=validar_monedas, mensajes=mensajes)
     
-    else: # Si el metodo es POST
+    else:
         try: 
             validar_monedas = monedas_inicio()
         except Exception as e:
@@ -46,7 +46,7 @@ def compra_venta():
         validacion.from_currency.choices = validar_monedas
        
         
-        if request.form.get('calculadora') == 'Calculadora' and validacion.validate: # Si le damos a la calculadora, llamamos a la API
+        if request.form.get('calculadora') == 'Calculadora' and validacion.validate:
             amount = request.form.get('from_quantity')
             symbol = request.form.get('from_currency')
             convert = request.form.get('to_currency')
@@ -79,15 +79,20 @@ def compra_venta():
                                 try: 
                                     url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
                                     try: 
-                                        respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                                        respuesta = consulta_api(url)
                                     except Exception as e:
                                         print("**ERROR**: Acceso a la API - intercambio de precio de las monedas: {} - {}". format(type(e).__name__, e))
                                         mensajes.append("Error en acceso a la API. Consulte con el administrador.")
                                         return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
                                                
-                                    to_quantity = respuesta['data']['quote'][convert]['price'] # Sacamos el precio de conversión de la moneda a cambiar
+                                    to_quantity = respuesta['data']['quote'][convert]['price']
+                                    if convert == "EUR":
+                                        print ("{0:.2f}".format(to_quantity))
+                                    else:
+                                        print ("{0:.8f}".format(to_quantity))
+                                    
                                     #REDONDEAR AQUI LOS EUROS Y LAS MONEDAS                
-                                    p_u = float(amount)/to_quantity # Sacamos el precio unitario dividiendo entre la cantidad
+                                    p_u = float(amount)/to_quantity 
                                                     
                                     return render_template ("compra_criptos.html", validacion = validacion, to_quantity = to_quantity, p_u = p_u) 
                                 except:
@@ -152,7 +157,6 @@ def estado_inversiones():
         for numero in euros_saldo:
             suma_saldo += numero
         
-        #PASAMOS LAS CRIPTOMONEDAS A SU VALOR ACTUAL EN €
         monedas_consulta = list(monedas_saldo.items())
         monedas_cotizacion = []
         for clave in monedas_consulta:
@@ -163,7 +167,7 @@ def estado_inversiones():
             if symbol != "EUR":
                 url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion?amount={}&symbol={}&convert={}&CMC_PRO_API_KEY={}'.format(amount,symbol,convert,API_KEY)
                 try: 
-                    respuesta = consulta_api(url) #Llamamos a la función de consuta de la API
+                    respuesta = consulta_api(url)
                 except Exception as e:
                     print("**ERROR**: Acceso a la API - intercambio de precio de las monedas: {} - {}". format(type(e).__name__, e))
                     mensajes.append("Error en acceso a la API. Consulte con el administrador.")
@@ -172,15 +176,10 @@ def estado_inversiones():
                 to_quantity = respuesta['data']['quote'][convert]['price']
                 monedas_cotizacion.append(to_quantity)
         
-        print ("SOY MONEDAS COTIZACIÓN", monedas_cotizacion) #TOTAL DEL VALOR DE LAS CRIPTOS EN EUROS
-        
         suma_cotizacion = 0
         for numero in monedas_cotizacion:
             suma_cotizacion += numero
             
-        print ("SOY EL VALOR DE € EN CRIPTOS: ", suma_cotizacion) # SUMA DEL VALOR DE LAS CRIPTOS EN EUROS
-                                         
-        # CALCULAMOS EL TOTAL DE EUROS INVERTIDOS
         try: 
             hucha_euro = euros_invertidos()
         except Exception as e:
@@ -200,14 +199,10 @@ def estado_inversiones():
                 
         suma_invertidos = 0
         for numero in euros_inversion:
-            suma_invertidos += numero
-        
-        print ("SOY EL TOTAL DE EUROS INVERTIDOS", suma_invertidos) # TOTAL € INVERTIDOS     
+            suma_invertidos += numero    
                 
         valor_actual = suma_saldo + suma_cotizacion +  suma_invertidos
         
-        print ("SOY LA SUMA TOTAL: ", valor_actual)
-        #hacer consulta a la base de datos por si hay algo, sino hay nada return
         if suma_saldo != 0:
             rentabilidad = 1-(suma_invertidos/valor_actual)        
         else:

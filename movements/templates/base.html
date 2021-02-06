@@ -44,16 +44,30 @@
               
                 <div class="collapse navbar-collapse" id="navbarColor01">
                   <ul class="navbar-nav mr-auto">
+
+                    {% if title %}
                     <li class="nav-item active"></li>
-                    <a class="nav-link" href="/">Inicio
-                    </a>
-                    </li>
-                    <li class="nav-item">
+                    <a class="nav-link">Inicio</a>
+                    {% else %}
+                    <li class="nav-item active"></li>
+                    <a class="nav-link" href="/">Inicio</a>
+                    {% endif %}
+
+                    {% if validacion %}
+                    <li class="nav-item"></li>
+                    <a class="nav-link">Invertir</a>
+                    {% else %}
+                    <li class="nav-item"></li>
                     <a class="nav-link" href="/purchase">Invertir</a>
-                    </li>
-                    <li class="nav-item">
+                    {% endif %}
+
+                    {%if suma_saldo%}
+                    <li class="nav-item"></li>
+                    <a class="nav-link">Estado de las inversiones</a>
+                    {% else %}
+                    <li class="nav-item"></li>
                     <a class="nav-link" href="/status">Estado de las inversiones</a>
-                    </li>
+                    {% endif %}
             </header>
 <br></br>
             <div class="container">
