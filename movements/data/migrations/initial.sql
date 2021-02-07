@@ -1,0 +1,1 @@
+CREATE TABLE criptomonedas(                id INTEGER PRIMARY KEY NOT NULL,                date TEXT NOT NULL,                time TEXT NOT NULL,                from_currency INTEGER NOT NULL,                from_quantity REAL NOT NULL,                to_currency INTEGER NOT NULL,                to_quantity REAL NOT NULL,                p_u REAL NOT NULL);
