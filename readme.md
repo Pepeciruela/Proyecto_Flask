@@ -3,9 +3,10 @@
 - Abrimos Visual Studio Code.
 
 - Descargamos la carpeta del repositorio GitHub y la guardamos en nuestra área de trabajo.
-    - También podemos Clonar el repositorio desde la dirección HTTPS.
-    - En nuestro terminal escribimos git clone y pegamos la URL copiada del anterior repositorio.
-    - Pulsamos Enter para crear un clon local.
+
+- También podemos crear una carpeta vacía con el nombre que nosotros queremos y clonar el repositorio en esa carpeta.
+    - Para ello en la página principal de Visual Studio Code seleccionamos clonar repositorio.
+    - Pegamos la URL desde Github y seleccionamos donde clonar la carpeta.
 
 - Una vez tenemos el repositorio del Proyecto_Flask procedemos a crear nuestro entorno virtual:
     - En nuestro terminal ejecutamos python3 -m venv <nombre_del_entorno> (Este será el nombre con el que llamemos al entorno virtual).
