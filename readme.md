@@ -45,8 +45,7 @@
 ## CREACIÓN DE LA BASE DE DATOS
 
 - En nuestro terminal ejecutamos el script crear_bbdd.py
-- Dentro de la carpeta movement, creamos una subcarpeta llamada data.
-    - Movemos la base de datos creada 'database.db' a la carpeta data que acabamos de crear dentro de movements.
+- Movemos la base de datos creada 'database.db' a la carpeta data que está dentro de movements.
 - En nuestro fichero config.py, modificamos el apartado DB_FILE, por la ruta de nuestra base de datos. En este caso 'movements/data/database.db'
 
 ## EJECUCIÓN
