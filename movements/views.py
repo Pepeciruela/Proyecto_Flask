@@ -47,35 +47,31 @@ def compra_venta():
         validacion.from_currency.choices = validar_monedas
        
         if request.form.get('calculadora') == 'Calculadora' and validacion.validate:
-            n_amount = request.form.get('from_quantity')
-            validadores=('0','1','2','3','4','5','6','7','8','9',',','.')
+            amount = request.form.get('from_quantity')
+            validadores=('0','1','2','3','4','5','6','7','8','9','.')
             contador = 0
-            for i in n_amount:
-                if i in validadores:
-                    if i == ',' or i == '.':
+            for i in amount:
+                if i == ',':
+                    flash ("Utiliza '.' para separar los números decimales")
+                    return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes)
+                elif i in validadores:
+                    if i == '.':
                         contador = contador +1
                         if contador > 1:
                             flash ("Ese no es un numero valido. Por favor repita la operacion")
                             return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes)
                         else:
-                            pass      
+                            pass                      
                 else:
                     flash ("Ese no es un numero valido. Por favor repita la operacion")
                     return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
-
-            try:
-                cambio = '[,]'
-                amount = re.sub(cambio, '.', n_amount)
-                print("Soy amount:", amount)
-            except:
-                flash("Ese no es un numero valido. Por favor repita la operacion")
-                return render_template('compra_criptos.html', validacion = validacion, validar_monedas=[], mensajes=mensajes) 
 
             symbol = request.form.get('from_currency')
             convert = request.form.get('to_currency')
                 
             valor1 = [symbol]
             valor2 = [amount]
+            
                 
             comprobacion = dict(zip(valor1, valor2))
                 
