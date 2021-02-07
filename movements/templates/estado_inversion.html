@@ -38,23 +38,35 @@
 <div class="card border-success mb-3" style="max-width: 200rem;">
   <div class="card-header">EUROS INVERTIDOS</div>
   <div class="card-body">
+    {% if mensajes %}
+    <h4 class="alert alert-dismissible alert-danger">La suma de euros invertidos no está diponible en estos momentos.</h4>
+    {% else %}
     <h4 class="card-title">{{"{0:.2f}".format(suma_invertidos)}} €</h4>
     <p class="card-text">Esta es la cantidad de euros que has invertido hasta el momento.</p>
+    {% endif %}
   </div>
 <br>
 
 <div class="card-header">VALOR ACTUAL</div>
 <div class="card-body">
+  {% if mensajes %}
+  <h4 class="alert alert-dismissible alert-danger">El valor actual de la inversión no está diponible en estos momentos.</h4>
+  {% else %}
   <h4 class="card-title">{{"{0:.2f}".format(valor_actual)}} €</h4>
   <p class="card-text">Este es el valor actual de tu cartera en euros.</p>
+  {% endif %}
 </div>
 
 <br>
 
 <div class="card-header">RENTABILIDAD</div>
 <div class="card-body">
+  {% if mensajes %}
+  <h4 class="alert alert-dismissible alert-danger">La rentabilidad actual de la cartera no está disponible en estos momentos</h4>
+  {% else %}
   <h4 class="card-title">{{"{0:.6f}".format(rentabilidad)}}%</h4>
   <p class="card-text">Esta es la rentabilidad actualizada de tu cartera.</p>
+  {% endif %}
 </div>
 
 
