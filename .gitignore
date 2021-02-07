@@ -2,5 +2,5 @@ venv/
 config.py
 __pycache__/
 .DS_Store
-movements/data/database.db.sqlite3
+movements/data/database.db
 .env
