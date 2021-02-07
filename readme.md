@@ -1,5 +1,7 @@
 # INSTALACIÓN
 
+## DESCARGA O CLONACIÓN DEL REPOSITORIO
+
 - Abrimos Visual Studio Code.
 
 - Descargamos la carpeta del repositorio GitHub y la guardamos en nuestra área de trabajo.
@@ -8,12 +10,19 @@
     - Para ello en la página principal de Visual Studio Code seleccionamos clonar repositorio.
     - Pegamos la URL desde Github y seleccionamos donde clonar la carpeta.
 
+## CREACIÓN DEL ENTORNO VIRTUAL
+
 - Una vez tenemos el repositorio del Proyecto_Flask procedemos a crear nuestro entorno virtual:
     - En nuestro terminal ejecutamos python3 -m venv <nombre_del_entorno> (Este será el nombre con el que llamemos al entorno virtual).
     - Ejemplo:
         -  python3 -m venv venv 
     - Ahora activamos el entorno virtual (para Mac):
-    - source <nombre_del_entorno>/bin/activate
+    - source <nombre_del_entorno>/bin/activate.
+
+- Dentro de la carpeta raiz del proyecto creamos el archivo .env
+    - Dentro del archivo .env introducimos lo siguiente:
+        - FLASK_APP=run.py
+        - FLASK_ENV=development
 
 ## INSTALACIÓN DE DEPENDENCIAS
 
